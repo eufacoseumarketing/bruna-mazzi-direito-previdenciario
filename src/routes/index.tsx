@@ -44,11 +44,11 @@ const BG_TEXTURE_LIGHT = "https://images.unsplash.com/photo-1600607686527-6fb886
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Bruna Mazzi Advocacia — Direito Previdenciário em Sorocaba/SP" },
+      { title: "Bruna Mazieri Advocacia — Direito Previdenciário em Sorocaba/SP" },
       {
         name: "description",
         content:
-          "Reverta seu benefício negado pelo INSS com a Dra. Bruna Mazzi. Análise técnica, honesta e sem complicações.",
+          "Reverta seu benefício negado pelo INSS com a Dra. Bruna Mazieri. Análise técnica, honesta e sem complicações.",
       },
     ],
   }),
@@ -96,7 +96,7 @@ function Header() {
             <div className="relative rounded-full overflow-hidden shadow-[0_0_15px_rgba(193,158,114,0.3)] border border-[#C19E72]/30 transition-all duration-500 w-10 h-10 md:w-11 md:h-11">
               <img 
                 src={logoImg} 
-                alt="Bruna Mazzi Advocacia" 
+                alt="Bruna Mazieri Advocacia" 
                 className="w-full h-full object-cover" 
               />
             </div>
@@ -242,7 +242,7 @@ function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
           src={mobileImg} 
-          alt="Dra. Bruna Mazzi" 
+          alt="Dra. Bruna Mazieri" 
           className="w-full h-full object-cover object-top"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F5F5F0]/30 to-[#F5F5F0]" />
@@ -660,6 +660,13 @@ function Timeline() {
             </motion.div>
           ))}
         </div>
+
+        <div className="mt-16 text-center">
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" 
+            className="inline-flex items-center gap-3 rounded-full bg-[#C19E72] hover:bg-[#A8875B] text-white px-8 py-4 text-sm font-bold transition-all shadow-[0_0_20px_rgba(193,158,114,0.3)] hover:shadow-[0_0_35px_rgba(193,158,114,0.6)] hover:-translate-y-0.5">
+            Falar com a Dra. Bruna <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -689,9 +696,9 @@ function Sobre() {
           >
             <div className="inline-block text-[#17202D] text-[10px] tracking-[0.35em] uppercase font-bold mb-4 bg-white/70 backdrop-blur-sm px-4 py-1.5 rounded-full border border-[#C19E72]/40 shadow-[0_0_15px_rgba(193,158,114,0.2)]">Sobre</div>
             <h2 className="font-display text-3xl md:text-4xl text-[#17202D] mb-6 font-bold tracking-tight">
-              Dra. <span className="text-[#C19E72] italic font-serif font-light drop-shadow-[0_0_10px_rgba(193,158,114,0.3)]">Bruna Mazzi</span>
+              Dra. <span className="text-[#C19E72] italic font-serif font-light drop-shadow-[0_0_10px_rgba(193,158,114,0.3)]">Bruna Mazieri</span>
             </h2>
-            <div className="text-[#17202D]/80 text-sm leading-relaxed space-y-4 mb-8 font-medium max-w-lg">
+            <div className="text-[#17202D]/80 text-sm leading-relaxed space-y-4 mb-8 font-medium max-w-lg mx-auto text-center md:text-left">
               <p>
                 Com mais de uma década e meia de prática consolidada na área previdenciária, atuo na defesa de direitos e no restabelecimento de benefícios ilegalmente negados pelo sistema público de previdência.
               </p>
@@ -700,7 +707,7 @@ function Sobre() {
               </p>
             </div>
             
-            <div className="space-y-4 mb-10 bg-white/70 backdrop-blur-md p-5 rounded-[1.5rem] border border-[#C19E72]/20 shadow-[0_0_30px_rgba(193,158,114,0.1)] hover:shadow-[0_0_40px_rgba(193,158,114,0.2)] transition-shadow duration-500">
+            <div className="space-y-4 mb-10 bg-white/70 backdrop-blur-md p-5 rounded-[1.5rem] text-left md:text-left mx-auto border border-[#C19E72]/20 shadow-[0_0_30px_rgba(193,158,114,0.1)] hover:shadow-[0_0_40px_rgba(193,158,114,0.2)] transition-shadow duration-500">
               {highlights.map((h, i) => (
                 <motion.div
                   key={i}
@@ -717,7 +724,7 @@ function Sobre() {
                 </motion.div>
               ))}
             </div>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#17202D] hover:bg-[#202C3D] text-[#C19E72] px-7 py-3 rounded-full text-xs font-bold transition-all shadow-[0_0_20px_rgba(193,158,114,0.3)] hover:shadow-[0_0_35px_rgba(193,158,114,0.6)] border border-[#C19E72]/40 hover:-translate-y-0.5">
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#17202D] hover:bg-[#202C3D] text-[#C19E72] px-7 py-3 rounded-full text-xs font-bold transition-all shadow-[0_0_20px_rgba(193,158,114,0.3)] hover:shadow-[0_0_35px_rgba(193,158,114,0.6)] border border-[#C19E72]/40 hover:-translate-y-0.5 mx-auto block w-fit">
               Falar com a Dra. Bruna <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </motion.div>
@@ -730,7 +737,7 @@ function Sobre() {
             className="relative"
           >
             <div className="relative rounded-[2rem] overflow-hidden shadow-[0_0_50px_rgba(23,32,45,0.2)] h-[450px] md:h-[600px] border border-[#C19E72]/20">
-              <img src={brunaPhoto} alt="Dra. Bruna Mazzi" className="w-full h-full object-cover object-top" loading="lazy" />
+              <img src={brunaPhoto} alt="Dra. Bruna Mazieri" className="w-full h-full object-cover object-top" loading="lazy" />
               <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-[2rem]" />
             </div>
             
@@ -949,28 +956,28 @@ function Footer() {
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-12 h-12 rounded-full overflow-hidden border border-[#C19E72]/40 shadow-[0_0_20px_rgba(193,158,114,0.3)]">
-                  <img src={logoImg} alt="Bruna Mazzi Advocacia" className="w-full h-full object-cover" />
+                  <img src={logoImg} alt="Bruna Mazieri Advocacia" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <div className="font-display text-lg text-white font-bold tracking-wide">Bruna Mazzi</div>
+                  <div className="font-display text-lg text-white font-bold tracking-wide">Bruna Mazieri</div>
                   <div className="text-[9px] font-bold tracking-[0.4em] text-[#C19E72] uppercase mt-0.5">Advocacia</div>
                 </div>
               </div>
-              <p className="text-white/50 text-xs leading-relaxed max-w-xs font-light">
+              <p className="text-white/50 text-sm leading-relaxed max-w-xs font-light">
                 Advocacia previdenciária técnica, transparente e humana. Defendendo seus direitos com precisão e clareza.
               </p>
             </div>
             
-            <div className="text-xs text-white/60 space-y-2.5 font-light">
+            <div className="text-sm text-white/60 space-y-2.5 font-light">
               <div className="text-[#C19E72] text-[10px] font-bold tracking-[0.35em] uppercase mb-4">Contato</div>
-              <div className="hover:text-white transition-colors cursor-pointer">contato@brunamazzi.adv.br</div>
+              <a href="mailto:contato@brunamazieri.adv.br" className="hover:text-white transition-colors">contato@brunamazieri.adv.br</a>
               <div>Sorocaba/SP</div>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-[#C19E72] font-medium hover:text-white transition-colors">
                 Falar no WhatsApp →
               </a>
             </div>
             
-            <div className="text-xs text-white/60 space-y-2.5 font-light">
+            <div className="text-sm text-white/60 space-y-2.5 font-light">
               <div className="text-[#C19E72] text-[10px] font-bold tracking-[0.35em] uppercase mb-4">Navegação</div>
               <div><a href="#servicos" className="hover:text-white transition-colors">Serviços</a></div>
               <div><a href="#sobre" className="hover:text-white transition-colors">Sobre</a></div>
@@ -983,8 +990,8 @@ function Footer() {
             </div>
           </div>
           
-          <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row gap-4 justify-between items-center text-[10px] text-white/40 font-light">
-            <div>© {new Date().getFullYear()} Bruna Mazzi Advocacia. Todos os direitos reservados.</div>
+          <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row gap-4 justify-between items-center text-[11px] text-white/40 font-light">
+            <div>© {new Date().getFullYear()} Bruna Mazieri Advocacia. Todos os direitos reservados.</div>
             <div>
               Desenvolvido por{" "}
               <a href="https://lp.eufacoseu.marketing" target="_blank" rel="noopener noreferrer" className="text-[#C19E72] hover:text-white transition-colors font-medium">

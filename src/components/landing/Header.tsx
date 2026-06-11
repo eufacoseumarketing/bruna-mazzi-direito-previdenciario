@@ -51,7 +51,7 @@ export function Header() {
           >
             <img 
               src={logoImg} 
-              alt="Bruna Mazzi Advocacia" 
+              alt="Bruna Mazieri Advocacia" 
               className={`object-contain mix-blend-multiply transition-all duration-500 ${
                 scrolled ? "h-8 md:h-10" : "h-10 md:h-12"
               }`} 
@@ -123,7 +123,7 @@ export function Header() {
                   <motion.a
                     href="#cta-final"
                     // FIX MOBILE: items-center REMOVIDO, adicionado pt-3 e pb-5 para centralizar o texto visualmente subindo-o
-                    className="w-full flex flex-col items-center justify-center h-14 bg-[#C19E72] text-white rounded-xl font-bold text-base leading-normal shadow-lg pt-3 pb-5"
+                    className="w-full flex items-center justify-center h-14 bg-[#C19E72] text-white rounded-xl font-bold text-base shadow-lg"
                     onClick={() => setMobileMenuOpen(false)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
