@@ -392,7 +392,7 @@ function Servicos() {
   ];
 
   return (
-    <section id="servicos" className="relative pt-14 md:pt-10 pb-14 md:pb-20 border-b border-[#17202D]/5 overflow-hidden">
+    <section id="serviços" className="relative pt-14 md:pt-10 pb-14 md:pb-20 border-b border-[#17202D]/5 overflow-hidden">
       
       <div className="absolute inset-0 z-0 pointer-events-none bg-[#F5F5F0]">
         <img 
@@ -951,7 +951,7 @@ function Footer() {
             
             <div className="text-sm text-white/60 space-y-2.5 font-light">
               <div className="text-[#C19E72] text-[10px] font-bold tracking-[0.35em] uppercase mb-4">Navegação</div>
-              <div><a href="#servicos" className="hover:text-white transition-colors">Serviços</a></div>
+              <div><a href="#serviços" className="hover:text-white transition-colors">Serviços</a></div>
               <div><a href="#sobre" className="hover:text-white transition-colors">Sobre</a></div>
               <div><a href="#faq" className="hover:text-white transition-colors">FAQ</a></div>
               <div>
