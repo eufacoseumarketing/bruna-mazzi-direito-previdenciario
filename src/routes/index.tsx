@@ -328,7 +328,7 @@ function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7 }}
-            className="flex items-center mt-2 w-full sm:w-auto"
+            className="flex items-center justify-center mt-2 w-full sm:w-auto"
           >
             <a 
               href={WA_URL} 
@@ -338,7 +338,6 @@ function HeroSection() {
             >
               Quero falar com a Dra. Bruna <ArrowRight className="w-2 h-2 transition-transform group-hover:translate-x-1" />
             </a>
-            </div>
           </motion.div>
         </div>
       </div>
@@ -673,7 +672,7 @@ function Sobre() {
             </h2>
             <div className="text-[#17202D]/80 text-sm leading-relaxed space-y-4 mb-8 font-medium max-w-lg mx-auto text-center md:text-left">
               <p>
-                Com mais de uma década e meia de prática consolidada na área, atuo na defesa de direitos e no restabelecimento de benefícios ilegalmente negados pelo sistema público de previdência.
+                Com mais de uma década e meia de prática consolidada na área, atuo na defesa de direitos e no restabelecimento de benefícios ilegalmente negados pelo sistema público.
               </p>
               <p>
                 Com uma estrutura jurídica nativa digital, oferecemos a Sorocaba e região uma advocacia célere, transparente e pautada no diálogo claro e compreensível.
