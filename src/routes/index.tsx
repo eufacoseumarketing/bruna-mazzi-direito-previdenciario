@@ -338,6 +338,7 @@ function HeroSection() {
             >
               Quero falar com a Dra. Bruna <ArrowRight className="w-2 h-2 transition-transform group-hover:translate-x-1" />
             </a>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -508,7 +509,7 @@ function Servicos() {
         </div>
 
         <div className="mt-4 flex justify-center px-6">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#17202D] text-[#C19E72] px-7 py-3 rounded-full text-xs font-bold transition-all shadow-[0_0_20px_rgba(193,158,114,0.2)] hover:shadow-[0_0_30px_rgba(193,158,114,0.6)] border border-[#C19E72]/30 hover:-translate-y-0.5">
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#17202D] text-[#C19E72] px-7 py-3 rounded-full text-xs font-bold transition-all shadow-[0_0_20px_rgba(193,158,114,0.2)] hover:shadow-[0_0_30px_rgba(193,158,114,0.6)] border border-[#C19E72]/30 hover:-translate-y-0.5 mx-auto">
             Analisar meu caso agora <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </div>
