@@ -694,6 +694,7 @@ function Sobre() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center md:text-left"
           >
             <div className="inline-block text-[#17202D] text-[10px] tracking-[0.35em] uppercase font-bold mb-4 bg-white/70 backdrop-blur-sm px-4 py-1.5 rounded-full border border-[#C19E72]/40 shadow-[0_0_15px_rgba(193,158,114,0.2)]">Sobre</div>
             <h2 className="font-display text-3xl md:text-4xl text-[#17202D] mb-6 font-bold tracking-tight">
