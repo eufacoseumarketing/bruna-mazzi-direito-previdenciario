@@ -392,37 +392,6 @@ function Servicos() {
     { t: "Perícia Negada ou Demora no Agendamento", d: "Atuação em casos de negativas e atrasos na perícia do INSS, buscando agilizar a análise e proteger seu benefício.", img: NegadaImg },
   ];
 
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  // Rolagem manual (Setas)
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -330, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 330, behavior: "smooth" });
-    }
-  };
-
-  // Auto-play lento (6 segundos)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (carouselRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-        // Se chegou no fim, volta pro começo suavemente
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
-          carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          carouselRef.current.scrollBy({ left: 330, behavior: "smooth" });
-        }
-      }
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <section id="servicos" className="relative pt-14 md:pt-10 pb-14 md:pb-20 border-b border-[#17202D]/5 overflow-hidden">
       
@@ -446,65 +415,67 @@ function Servicos() {
           </p>
         </div>
 
-        {/* Contêiner do Carrossel Arrastável */}
-        <div className="relative w-full group mt-10 md:px-12">
-          
-          {/* Botões - Visíveis apenas no Desktop */}
-          <button 
-            onClick={scrollLeft} 
-            className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_0_20px_rgba(193,158,114,0.3)] border border-[#C19E72]/30 text-[#C19E72] hover:bg-[#C19E72] hover:text-white hover:scale-105 transition-all"
-            aria-label="Anterior"
-          >
-            <ArrowRight className="w-6 h-6 rotate-180" />
-          </button>
-          <button 
-            onClick={scrollRight} 
-            className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 h-14 w-14 items-center justify-center rounded-full bg-white shadow-[0_0_20px_rgba(193,158,114,0.3)] border border-[#C19E72]/30 text-[#C19E72] hover:bg-[#C19E72] hover:text-white hover:scale-105 transition-all"
-            aria-label="Próximo"
-          >
-            <ArrowRight className="w-6 h-6" />
-          </button>
-
-          {/* Sombras laterais (Ocultam o recorte reto) */}
+        {/* Esteira Infinita — Mobile: scroll nativo ; Desktop: marquee automático */}
+        <div className="relative w-full group mt-10">
+          {/* Sombras laterais */}
           <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-[#F5F5F0] to-transparent z-20 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-[#F5F5F0] to-transparent z-20 pointer-events-none" />
 
-          {/* Trilha do Carrossel (Nativo com snap) */}
-          <div 
-            ref={carouselRef} 
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar py-8 px-6 md:px-32"
-          >
+          {/* Mobile: scroll nativo | Desktop: marquee infinito */}
+          <div className="md:hidden flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar py-8 px-6">
             {cards.map((c, i) => (
               <div
                 key={i}
-                className="snap-center shrink-0 w-[280px] md:w-[320px] relative bg-white rounded-[1.25rem] border border-[#C19E72]/10 shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(23,32,45,0.1)] flex flex-col overflow-hidden group"
+                className="snap-center shrink-0 w-[280px] relative bg-white rounded-[1.25rem] border border-[#C19E72]/10 shadow-sm flex flex-col overflow-hidden group"
               >
-                <div className="relative w-full h-32 md:h-40 overflow-hidden shrink-0">
-                  <img 
-                    src={c.img} 
-                    alt={c.t} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[15%]" 
-                  />
+                <div className="relative w-full h-32 overflow-hidden shrink-0">
+                  <img src={c.img} alt={c.t} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#17202D]/80 via-[#17202D]/10 to-transparent" />
                 </div>
-
                 <div className="p-5 flex flex-col flex-1 bg-white relative z-10">
-                  <h3 className="text-[15px] md:text-[17px] text-[#17202D] font-bold mb-2 leading-tight group-hover:text-[#C19E72] transition-colors">
-                    {c.t}
-                  </h3>
-                  <p className="text-[#17202D]/70 text-[13px] leading-relaxed font-medium mb-5">
-                    {c.d}
-                  </p>
-                  
-                  <div className="mt-auto pt-3 border-t border-[#C19E72]/10 flex items-center justify-between transition-colors duration-300">
-                    <span className="text-[#17202D]/50 text-[10px] font-bold tracking-widest uppercase group-hover:text-[#C19E72]">Detalhes</span>
-                    <div className="w-6 h-6 rounded-full bg-[#17202D] shadow-[0_0_10px_rgba(193,158,114,0)] flex items-center justify-center transform -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(193,158,114,0.6)] transition-all duration-300">
+                  <h3 className="text-[15px] text-[#17202D] font-bold mb-2 leading-tight">{c.t}</h3>
+                  <p className="text-[#17202D]/70 text-[13px] leading-relaxed font-medium mb-5">{c.d}</p>
+                  <div className="mt-auto pt-3 border-t border-[#C19E72]/10 flex items-center justify-between">
+                    <span className="text-[#17202D]/50 text-[10px] font-bold tracking-widest uppercase">Detalhes</span>
+                    <div className="w-6 h-6 rounded-full bg-[#17202D] flex items-center justify-center">
                       <ArrowRight className="w-3 h-3 text-[#C19E72]" />
                     </div>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Desktop: esteira infinita */}
+          <div className="hidden md:block relative w-full overflow-hidden py-8">
+            <motion.div
+              className="flex gap-6 w-max px-32"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 35, repeat: Infinity }}
+              whileHover={{ animationPlayState: "paused" } as any}
+            >
+              {[...cards, ...cards].map((c, i) => (
+                <div
+                  key={i}
+                  className="shrink-0 w-[320px] relative bg-white rounded-[1.25rem] border border-[#C19E72]/10 shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(23,32,45,0.1)] flex flex-col overflow-hidden group"
+                >
+                  <div className="relative w-full h-40 overflow-hidden shrink-0">
+                    <img src={c.img} alt={c.t} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[15%]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#17202D]/80 via-[#17202D]/10 to-transparent" />
+                  </div>
+                  <div className="p-5 flex flex-col flex-1 bg-white relative z-10">
+                    <h3 className="text-[17px] text-[#17202D] font-bold mb-2 leading-tight group-hover:text-[#C19E72] transition-colors">{c.t}</h3>
+                    <p className="text-[#17202D]/70 text-[13px] leading-relaxed font-medium mb-5">{c.d}</p>
+                    <div className="mt-auto pt-3 border-t border-[#C19E72]/10 flex items-center justify-between transition-colors duration-300">
+                      <span className="text-[#17202D]/50 text-[10px] font-bold tracking-widest uppercase group-hover:text-[#C19E72]">Detalhes</span>
+                      <div className="w-6 h-6 rounded-full bg-[#17202D] shadow-[0_0_10px_rgba(193,158,114,0)] flex items-center justify-center transform -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(193,158,114,0.6)] transition-all duration-300">
+                        <ArrowRight className="w-3 h-3 text-[#C19E72]" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
 
