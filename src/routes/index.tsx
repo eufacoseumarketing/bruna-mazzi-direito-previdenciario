@@ -564,7 +564,7 @@ function Depoimentos() {
 /* ---------- 3. Timeline ---------- */
 function Timeline() {
   const steps = [
-    { icon: FileSearch, t: "Análise Documental Digital", d: "Envio de extrato do Meu INSS pelo WhatsApp de forma totalmente segura." },
+    { icon: FileSearch, t: "Análise Documental Digital", d: "Envio dos documentos necessários pelo WhatsApp de forma totalmente segura." },
     { icon: Search, t: "Estudo de Viabilidade", d: "Investigação das peculiaridades do caso para traçar o caminho seguro." },
     { icon: ShieldCheck, t: "Protocolo e Proteção", d: "Entrada no requerimento, recurso ou ajuizamento da ação judicial cabível." },
     { icon: Bell, t: "Acompanhamento", d: "Mantenho você informado em cada fase do processo até o final definitivo." },
@@ -647,7 +647,7 @@ function Timeline() {
 /* ---------- 4. Sobre ---------- */
 function Sobre() {
   const highlights = [
-    "Mais de 15 anos combatendo erros do INSS",
+    "Mais de 15 anos combatendo erros",
     "Especialista em planejamento e reversão de benefícios",
     "Estrutura digital e presencial ágil na região de Sorocaba",
   ];
@@ -673,7 +673,7 @@ function Sobre() {
             </h2>
             <div className="text-[#17202D]/80 text-sm leading-relaxed space-y-4 mb-8 font-medium max-w-lg mx-auto text-center md:text-left">
               <p>
-                Com mais de uma década e meia de prática consolidada na área previdenciária, atuo na defesa de direitos e no restabelecimento de benefícios ilegalmente negados pelo sistema público de previdência.
+                Com mais de uma década e meia de prática consolidada na área, atuo na defesa de direitos e no restabelecimento de benefícios ilegalmente negados pelo sistema público de previdência.
               </p>
               <p>
                 Com uma estrutura jurídica nativa digital, oferecemos a Sorocaba e região uma advocacia célere, transparente e pautada no diálogo claro e compreensível.
