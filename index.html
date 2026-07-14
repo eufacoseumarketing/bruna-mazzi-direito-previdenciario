@@ -10,9 +10,48 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://brunamazieri.adv.br/og-image.png" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-55WBGPGQ');</script>
+<!-- End Google Tag Manager -->
   </head>
   <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-55WBGPGQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+<script>
+(function(){
+  function clickPescaChatFab() {
+    var host = document.getElementById('pesca-chat-host');
+    if (host && host.shadowRoot) {
+      var fab = host.shadowRoot.querySelector('.fab, [class*="fab"]');
+      if (fab) { fab.click(); return true; }
+    }
+    return false;
+  }
+  function attach() {
+    document.querySelectorAll('.pescachat').forEach(function(el) {
+      if (el.dataset.pcClick) return;
+      el.dataset.pcClick = '1';
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!clickPescaChatFab()) {
+          setTimeout(function() { clickPescaChatFab(); }, 300);
+        }
+      });
+    });
+  }
+  attach();
+  new MutationObserver(function() { attach(); }).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
   </body>
 </html>
