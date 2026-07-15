@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Bruna Mazieri — Advocacia Previdenciária</title>
     <meta name="description" content="Reverta seu benefício negado pelo INSS. +15 anos de experiência em Direito Previdenciário. Atendimento digital ou presencial." />
     <meta property="og:title" content="Bruna Mazieri — Advocacia Previdenciária" />
@@ -10,27 +10,67 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://brunamazieri.adv.br/og-image.png" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-<!-- Meta Pixel Code -->
+<!-- Meta Pixel Code: fila do fbq definida de imediato (custo zero) para não perder o PageView; -->
+<!-- o download/execução real do fbevents.js (~100KB) só acontece no bloco adiado mais abaixo -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
+n.queue=[];
+}(window, document,'script');
 fbq('init', '987255377548780');
 fbq('track', 'PageView');
 </script>
 <!-- End Meta Pixel Code -->
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-55WBGPGQ');</script>
-<!-- End Google Tag Manager -->
+<!-- GTM + Meta Pixel (rede): adiados até a página ficar ociosa/interativa, para não competir com o LCP/TBT -->
+<script>
+(function () {
+  function loadTrackers() {
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-55WBGPGQ");
+
+    !(function (f, b, e, v, n, t, s) {
+      t = b.createElement(e);
+      t.async = true;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+  }
+
+  var fired = false;
+  function trigger() {
+    if (fired) return;
+    fired = true;
+    loadTrackers();
+    ["pointerdown", "touchstart", "keydown", "scroll"].forEach(function (evt) {
+      window.removeEventListener(evt, trigger);
+    });
+  }
+
+  ["pointerdown", "touchstart", "keydown", "scroll"].forEach(function (evt) {
+    window.addEventListener(evt, trigger, { passive: true, once: true });
+  });
+
+  window.addEventListener("load", function () {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(trigger, { timeout: 4000 });
+    } else {
+      setTimeout(trigger, 3000);
+    }
+  });
+})();
+</script>
+<!-- End GTM + Meta Pixel (rede) -->
   </head>
   <body>
 <!-- Meta Pixel Code (noscript) -->

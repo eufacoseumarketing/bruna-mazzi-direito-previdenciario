@@ -1,8 +1,10 @@
 import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
-const WA_URL =
-  "https://wa.me/5515999999999?text=Ol%C3%A1%20Dra.%20Bruna%2C%20gostaria%20de%20analisar%20meu%20benef%C3%ADcio";
+const WA_PHONE = "5515996142970";
+const WA_MESSAGE =
+  "Olá! Vim pelo site e gostaria de falar com a advogada Bruna Mazzieri.";
+const WA_URL = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
 export function WhatsAppFab() {
   return (

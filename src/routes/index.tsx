@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import {
   Scale,
@@ -22,24 +22,26 @@ import { WA_URL } from "@/components/landing/WhatsAppFab";
 
 // --- IMPORTAÇÃO DE TODAS AS IMAGENS ---
 import brunaPhoto from "@/assets/Bruna.webp";
-import bannerImage from "@/assets/banner.png";
-import logoImg from "@/assets/logo.jpg";
+import bannerImage from "@/assets/banner.webp";
+import logoImg from "@/assets/logo.webp";
 import pdpImg from "@/assets/pdp.webp";
-import predioImg from "@/assets/predio.webp";
 import balancaImg from "@/assets/balanca.webp";
-import mobileImg from "@/assets/mobile.png";
+import mobileImg from "@/assets/mobile.webp";
 import idososImg from "@/assets/idosos.webp";
 import negadoImg from "@/assets/negado.webp";
-import zapImg from "@/assets/whatsapp.png";
+import zapImg from "@/assets/whatsapp.webp";
 import NegadaImg from "@/assets/negada.webp";
 import TempoImg from "@/assets/tempo.webp";
+import PlanejamentoImg from "@/assets/card-planejamento.webp";
+import AuxilioImg from "@/assets/card-auxilio.webp";
+import AutismoImg from "@/assets/card-autismo.webp";
 
-// URLs DIRETAS DA INTERNET PARA TODOS OS FUNDOS (Unsplash)
-const BG_OFFICE_LIGHT = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop";
-const BG_BUILDING_1 = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"; 
-const BG_BUILDING_2 = "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2010&auto=format&fit=crop"; 
-const BG_BUILDING_3 = "https://images.unsplash.com/photo-1413809088667-46323a63b366?q=80&w=2000&auto=format&fit=crop";
-const BG_TEXTURE_LIGHT = "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop"; 
+// Fundos hospedados localmente (antes hotlinked do Unsplash — agora otimizados e no mesmo domínio)
+import BG_OFFICE_LIGHT from "@/assets/bg-office.webp";
+import BG_BUILDING_1 from "@/assets/bg-building1.webp";
+import BG_BUILDING_2 from "@/assets/bg-building2.webp";
+import BG_BUILDING_3 from "@/assets/bg-building3.webp";
+import BG_TEXTURE_LIGHT from "@/assets/bg-texture.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -94,10 +96,13 @@ function Header() {
             onClick={() => setMobileMenuOpen(false)}
           >
             <div className="relative rounded-full overflow-hidden shadow-[0_0_15px_rgba(193,158,114,0.3)] border border-[#C19E72]/30 transition-all duration-500 w-10 h-10 md:w-11 md:h-11">
-              <img 
-                src={logoImg} 
-                alt="Bruna Mazieri Advocacia" 
-                className="w-full h-full object-cover" 
+              <img
+                src={logoImg}
+                alt="Bruna Mazieri Advocacia"
+                className="w-full h-full object-cover"
+                decoding="async"
+                width={160}
+                height={160}
               />
             </div>
           </motion.a>
@@ -121,6 +126,8 @@ function Header() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden flex-shrink-0 p-2 text-[#17202D] bg-white/60 backdrop-blur-md rounded-full shadow-sm border border-white/40"
             whileTap={{ scale: 0.95 }}
+            aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -230,23 +237,42 @@ function KineticHeadline({ text, className = "" }: { text: string; className?: s
   );
 }
 
+/* ---------- Hook: media query síncrono (evita flash/duplo fetch de imagem) ---------- */
+function useSyncMediaQuery(query: string) {
+  const [matches, setMatches] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(query).matches
+  );
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = () => setMatches(mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
 /* ---------- Hero Section ---------- */
 function HeroSection() {
+  const isDesktop = useSyncMediaQuery("(min-width: 1024px)");
+
   return (
     <section id="top" className="relative bg-[#F5F5F0] min-h-[100dvh] flex flex-col justify-end lg:flex-row lg:items-center pt-[35vh] lg:pt-32 pb-16 lg:pb-32 overflow-hidden">
-      
-      {/* 1. Imagem de Fundo Mobile */}
-      <div className="absolute top-0 left-0 w-full h-[55vh] z-0 lg:hidden">
-        <motion.img 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          src={mobileImg} 
-          alt="Dra. Bruna Mazieri" 
-          className="w-full h-full object-cover object-top"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F5F5F0]/30 to-[#F5F5F0]" />
-      </div>
+
+      {/* 1. Imagem de Fundo Mobile — só monta no DOM em telas < lg (evita baixar as duas imagens do hero) */}
+      {!isDesktop && (
+        <div className="absolute top-0 left-0 w-full h-[55vh] z-0 lg:hidden">
+          <img
+            src={mobileImg}
+            alt="Dra. Bruna Mazieri"
+            className="w-full h-full object-cover object-top"
+            fetchPriority="high"
+            decoding="async"
+            width={1080}
+            height={594}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F5F5F0]/30 to-[#F5F5F0]" />
+        </div>
+      )}
 
       {/* 2. Elementos flutuantes (Balança da Justiça) Desktop */}
       <motion.div
@@ -264,17 +290,20 @@ function HeroSection() {
         <Scale size={200} strokeWidth={0.5} />
       </motion.div>
 
-      {/* 3. Banner Image Absolute (Exclusivo Desktop) */}
-      <div className="absolute inset-y-0 right-0 w-full lg:w-[50%] z-0 hidden lg:block">
-        <motion.img
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
-          className="w-full h-full object-cover object-center"
-          src={bannerImage}
-          alt="Banner - Advocacia Previdenciária"
-        />
-      </div>
+      {/* 3. Banner Image Absolute (Exclusivo Desktop) — só monta em telas >= lg */}
+      {isDesktop && (
+        <div className="absolute inset-y-0 right-0 w-full lg:w-[50%] z-0 hidden lg:block">
+          <img
+            className="w-full h-full object-cover object-center"
+            src={bannerImage}
+            alt="Banner - Advocacia Previdenciária"
+            fetchPriority="high"
+            decoding="async"
+            width={1920}
+            height={1080}
+          />
+        </div>
+      )}
 
       {/* Lado Esquerdo: Fundo Branco Curvado (Exclusivo Desktop) */}
       <motion.div
@@ -356,8 +385,9 @@ function Diferenciais() {
 
   return (
     <section className="relative z-30 bg-transparent -mt-8 md:-mt-12 lg:-mt-24 mb-12 lg:mb-0">
+      <h2 className="sr-only">Diferenciais</h2>
       <div className="max-w-6xl mx-auto px-6 md:px-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -370,7 +400,7 @@ function Diferenciais() {
                 <it.icon className="w-4 h-4 text-[#C19E72]" strokeWidth={2} />
               </div>
               <h3 className="text-base font-bold text-[#17202D] mb-1">{it.title}</h3>
-              <p className="text-[12px] text-[#17202D]/60 font-medium max-w-[160px]">{it.text}</p>
+              <p className="text-[12px] text-[#17202D]/75 font-medium max-w-[160px]">{it.text}</p>
             </div>
           ))}
         </motion.div>
@@ -381,12 +411,13 @@ function Diferenciais() {
 
 /* ---------- 1. Serviços (CARROSSEL INTERATIVO NATIVO) ---------- */
 function Servicos() {
+  const prefersReducedMotion = useReducedMotion();
   const cards = [
-    { t: "Planejamento Previdenciário", d: "Estudo seu tempo de contribuição para descobrir o melhor benefício.", img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop" },
+    { t: "Planejamento Previdenciário", d: "Estudo seu tempo de contribuição para descobrir o melhor benefício.", img: PlanejamentoImg },
     { t: "Reversão de Benefício Negado", d: 'Análise do motivo do "Não" do INSS e viabilidade das ações para reverter o indeferimento.', img: negadoImg },
-    { t: "Auxílio-Doença e Invalidez", d: "Analisamos, detalhadamente, seu caso para garantir seus direitos.", img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop" },
+    { t: "Auxílio-Doença e Invalidez", d: "Analisamos, detalhadamente, seu caso para garantir seus direitos.", img: AuxilioImg },
     { t: "BPC/LOAS (Amparo Social)", d: "Suporte completo para idosos e pessoas com deficiência que comprovem baixa renda familiar.", img: idososImg },
-    { t: "Benefícios para Autismo (TEA)", d: "Pedido inicial e revisão de BPC/LOAS para pessoas com Transtorno do Espectro Autista.", img: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=800&auto=format&fit=crop" },
+    { t: "Benefícios para Autismo (TEA)", d: "Pedido inicial e revisão de BPC/LOAS para pessoas com Transtorno do Espectro Autista.", img: AutismoImg },
     { t: "Tempo de serviço que não consta no INSS", d: "Se parte da sua trajetória profissional não consta no INSS, ajudo a reunir provas e regularizar a situação.", img: TempoImg },
     { t: "Perícia Negada ou Demora no Agendamento", d: "Atuação em casos de negativas e atrasos na perícia do INSS, buscando agilizar a análise e proteger seu benefício.", img: NegadaImg },
   ];
@@ -395,10 +426,14 @@ function Servicos() {
     <section id="serviços" className="relative pt-14 md:pt-10 pb-14 md:pb-20 border-b border-[#17202D]/5 overflow-hidden">
       
       <div className="absolute inset-0 z-0 pointer-events-none bg-[#F5F5F0]">
-        <img 
-          src={BG_TEXTURE_LIGHT} 
-          alt="Textura de Fundo" 
-          className="w-full h-full object-cover opacity-[0.25] mix-blend-multiply grayscale" 
+        <img
+          src={BG_TEXTURE_LIGHT}
+          alt="Textura de Fundo"
+          className="w-full h-full object-cover opacity-[0.25] mix-blend-multiply grayscale"
+          loading="lazy"
+          decoding="async"
+          width={1600}
+          height={2400}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#F5F5F0]/95 via-[#F5F5F0]/70 to-[#F5F5F0]/95" />
       </div>
@@ -421,21 +456,21 @@ function Servicos() {
           <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-[#F5F5F0] to-transparent z-20 pointer-events-none" />
 
           {/* Mobile: scroll nativo | Desktop: marquee infinito */}
-          <div className="md:hidden flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar py-8 px-6">
+          <div className="md:hidden flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar py-8 px-6 [-webkit-overflow-scrolling:touch]">
             {cards.map((c, i) => (
               <div
                 key={i}
                 className="snap-center shrink-0 w-[280px] relative bg-white rounded-[1.25rem] border border-[#C19E72]/10 shadow-sm flex flex-col overflow-hidden group"
               >
                 <div className="relative w-full h-32 overflow-hidden shrink-0">
-                  <img src={c.img} alt={c.t} className="w-full h-full object-cover" />
+                  <img src={c.img} alt={c.t} className="w-full h-full object-cover" loading="lazy" decoding="async" width={1000} height={667} />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#17202D]/80 via-[#17202D]/10 to-transparent" />
                 </div>
                 <div className="p-5 flex flex-col flex-1 bg-white relative z-10">
                   <h3 className="text-[15px] text-[#17202D] font-bold mb-2 leading-tight">{c.t}</h3>
                   <p className="text-[#17202D]/70 text-[13px] leading-relaxed font-medium mb-5">{c.d}</p>
                   <div className="mt-auto pt-3 border-t border-[#C19E72]/10 flex items-center justify-between">
-                    <span className="text-[#17202D]/50 text-[10px] font-bold tracking-widest uppercase">Detalhes</span>
+                    <span className="text-[#17202D]/65 text-[10px] font-bold tracking-widest uppercase">Detalhes</span>
                     <div className="w-6 h-6 rounded-full bg-[#17202D] flex items-center justify-center">
                       <ArrowRight className="w-3 h-3 text-[#C19E72]" />
                     </div>
@@ -449,9 +484,8 @@ function Servicos() {
           <div className="hidden md:block relative w-full overflow-hidden py-8">
             <motion.div
               className="flex gap-6 w-max px-32"
-              animate={{ x: ["0%", "-50%"] }}
+              animate={prefersReducedMotion ? undefined : { x: ["0%", "-50%"] }}
               transition={{ ease: "linear", duration: 35, repeat: Infinity }}
-              whileHover={{ animationPlayState: "paused" } as any}
             >
               {[...cards, ...cards].map((c, i) => (
                 <div
@@ -459,14 +493,14 @@ function Servicos() {
                   className="shrink-0 w-[320px] relative bg-white rounded-[1.25rem] border border-[#C19E72]/10 shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(23,32,45,0.1)] flex flex-col overflow-hidden group"
                 >
                   <div className="relative w-full h-40 overflow-hidden shrink-0">
-                    <img src={c.img} alt={c.t} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[15%]" />
+                    <img src={c.img} alt={c.t} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[15%]" loading="lazy" decoding="async" width={1000} height={667} />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#17202D]/80 via-[#17202D]/10 to-transparent" />
                   </div>
                   <div className="p-5 flex flex-col flex-1 bg-white relative z-10">
                     <h3 className="text-[17px] text-[#17202D] font-bold mb-2 leading-tight group-hover:text-[#C19E72] transition-colors">{c.t}</h3>
                     <p className="text-[#17202D]/70 text-[13px] leading-relaxed font-medium mb-5">{c.d}</p>
                     <div className="mt-auto pt-3 border-t border-[#C19E72]/10 flex items-center justify-between transition-colors duration-300">
-                      <span className="text-[#17202D]/50 text-[10px] font-bold tracking-widest uppercase group-hover:text-[#C19E72]">Detalhes</span>
+                      <span className="text-[#17202D]/65 text-[10px] font-bold tracking-widest uppercase group-hover:text-[#C19E72]">Detalhes</span>
                       <div className="w-6 h-6 rounded-full bg-[#17202D] shadow-[0_0_10px_rgba(193,158,114,0)] flex items-center justify-center transform -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(193,158,114,0.6)] transition-all duration-300">
                         <ArrowRight className="w-3 h-3 text-[#C19E72]" />
                       </div>
@@ -514,7 +548,7 @@ function Depoimentos() {
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img src={BG_BUILDING_1} alt="Prédio Corporativo" className="w-full h-full object-cover opacity-30 grayscale" />
+        <img src={BG_BUILDING_1} alt="Prédio Corporativo" className="w-full h-full object-cover opacity-30 grayscale" loading="lazy" decoding="async" width={1600} height={1067} />
         <div className="absolute inset-0 bg-[#17202D]/95 mix-blend-multiply" />
       </div>
 
@@ -585,7 +619,7 @@ function Timeline() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="absolute bottom-0 left-0 w-[50%] lg:w-[60%] max-w-[900px] hidden md:block z-0 pointer-events-none"
       >
-        <img src={pdpImg} alt="Decoração" className="w-full h-auto object-contain object-bottom opacity-90" />
+        <img src={pdpImg} alt="Decoração" className="w-full h-auto object-contain object-bottom opacity-90" loading="lazy" decoding="async" width={1200} height={1200} />
       </motion.div>
 
       <div className="max-w-5xl mx-auto px-6 md:px-8 relative z-10">
@@ -653,7 +687,7 @@ function Sobre() {
   return (
     <section id="sobre" className="relative py-16 md:py-24 overflow-hidden border-t border-[#17202D]/5">
       <div className="absolute inset-0 z-0">
-        <img src={BG_BUILDING_2} alt="Arquitetura Corporativa" className="w-full h-full object-cover opacity-20 grayscale" />
+        <img src={BG_BUILDING_2} alt="Arquitetura Corporativa" className="w-full h-full object-cover opacity-20 grayscale" loading="lazy" decoding="async" width={1600} height={2265} />
         <div className="absolute inset-0 bg-[#F5F5F0]/95" />
       </div>
 
@@ -741,11 +775,6 @@ function PorQue() {
   return (
     <section className="relative py-16 md:py-24 bg-[#17202D] text-white overflow-hidden">
       
-      <div className="absolute inset-0 z-0 bg-[#17202D]">
-        <img src={predioImg} className="w-full h-full object-cover opacity-80" />
-        <div className="absolute inset-0 bg-[#17202D]/70" /> 
-      </div>
-
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8">
         <div className="max-w-3xl mb-12">
           <div className="text-[#C19E72] text-[10px] tracking-[0.35em] uppercase font-bold mb-4 drop-shadow-[0_0_10px_rgba(193,158,114,0.5)]">Por que me escolher</div>
@@ -792,7 +821,7 @@ function FAQ() {
   return (
     <section id="faq" className="relative py-16 md:py-24 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img src={BG_BUILDING_3} alt="Prédio Espelhado" className="w-full h-full object-cover opacity-15 grayscale" />
+        <img src={BG_BUILDING_3} alt="Prédio Espelhado" className="w-full h-full object-cover opacity-15 grayscale" loading="lazy" decoding="async" width={1600} height={1067} />
         <div className="absolute inset-0 bg-[#F5F5F0]/95" />
       </div>
 
@@ -823,7 +852,7 @@ function FAQ() {
                   <span className={`text-sm md:text-base font-bold transition-colors ${isOpen ? "text-[#C19E72]" : "text-[#17202D]"}`}>{f.q}</span>
                   <ChevronDown
                     className={`w-5 h-5 flex-shrink-0 transition-transform duration-500 ${
-                      isOpen ? "text-[#C19E72] rotate-180" : "text-[#17202D]/50"
+                      isOpen ? "text-[#C19E72] rotate-180" : "text-[#17202D]/65"
                     }`}
                   />
                 </button>
@@ -858,7 +887,7 @@ function CTAFinal() {
   return (
     <section id="cta-final" ref={ref} className="relative py-24 md:py-32 overflow-hidden bg-[#17202D]">
       <div className="absolute inset-0 z-0">
-        <img src={BG_OFFICE_LIGHT} alt="Office" className="w-full h-full object-cover opacity-10 grayscale" />
+        <img src={BG_OFFICE_LIGHT} alt="Office" className="w-full h-full object-cover opacity-10 grayscale" loading="lazy" decoding="async" width={1600} height={1068} />
         <div className="absolute inset-0 bg-[#17202D]/90 mix-blend-multiply" />
       </div>
 
@@ -874,7 +903,7 @@ function CTAFinal() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="absolute bottom-0 left-0 w-[15%] md:w-[18%] lg:w-[20%] max-w-[300px] hidden md:block z-0 pointer-events-none"
       >
-        <img src={balancaImg} alt="Balança Esquerda" className="w-full h-auto object-contain object-bottom opacity-90" />
+        <img src={balancaImg} alt="Balança Esquerda" className="w-full h-auto object-contain object-bottom opacity-90" loading="lazy" decoding="async" width={800} height={800} />
       </motion.div>
 
       {/* IMAGEM BALANCA.PNG NA DIREITA DO CTA (ESPELHADA E DIMINUIDA PELA METADE) */}
@@ -885,7 +914,7 @@ function CTAFinal() {
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         className="absolute bottom-0 right-0 w-[15%] md:w-[18%] lg:w-[20%] max-w-[300px] hidden md:block z-0 pointer-events-none"
       >
-        <img src={balancaImg} alt="Balança Direita" className="w-full h-auto object-contain object-bottom opacity-90 scale-x-[-1]" />
+        <img src={balancaImg} alt="Balança Direita" className="w-full h-auto object-contain object-bottom opacity-90 scale-x-[-1]" loading="lazy" decoding="async" width={800} height={800} />
       </motion.div>
 
       <div className="max-w-3xl mx-auto px-6 md:px-8 text-center relative z-10">
@@ -928,7 +957,7 @@ function Footer() {
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-12 h-12 rounded-full overflow-hidden border border-[#C19E72]/40 shadow-[0_0_20px_rgba(193,158,114,0.3)]">
-                  <img src={logoImg} alt="Bruna Mazieri Advocacia" className="w-full h-full object-cover" />
+                  <img src={logoImg} alt="Bruna Mazieri Advocacia" className="w-full h-full object-cover" loading="lazy" decoding="async" width={160} height={160} />
                 </div>
                 <div>
                   <div className="font-display text-lg text-white font-bold tracking-wide">Bruna Mazieri</div>
@@ -984,14 +1013,15 @@ function CustomWhatsAppFab() {
       href={WA_URL}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="Falar no WhatsApp"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.5 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 w-14 h-14 md:w-16 md:h-16 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:shadow-[0_0_40px_rgba(37,211,102,0.7)] transition-shadow duration-300 border border-white/20 overflow-hidden"
+      className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-[max(1.5rem,env(safe-area-inset-right))] md:bottom-[max(2rem,env(safe-area-inset-bottom))] md:right-[max(2rem,env(safe-area-inset-right))] z-50 w-14 h-14 md:w-16 md:h-16 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:shadow-[0_0_40px_rgba(37,211,102,0.7)] transition-shadow duration-300 border border-white/20 overflow-hidden"
     >
-      <img src={zapImg} alt="WhatsApp" className="w-full h-full object-cover" />
+      <img src={zapImg} alt="WhatsApp" className="w-full h-full object-cover" decoding="async" width={256} height={256} />
     </motion.a>
   );
 }
